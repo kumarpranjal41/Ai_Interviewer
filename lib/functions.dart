@@ -7,9 +7,10 @@ import 'package:http/http.dart' as http;
 final List<Map<String, String>> messages = [];
 String hrquestion = '';
 String checkanswer = '';
-const String OpenAiKey = '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';
-//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
-//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
+const String OpenAiKey = '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';
+
+//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
+//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
 Future<String> chatGPTAPI(String prompt) async {
   messages.add({
     'role': 'user',
@@ -87,14 +88,12 @@ Future<void> speak(String text) async {
   await flutterTts.setSpeechRate(0.3);
 
   await flutterTts.setVolume(1.0);
-  await flutterTts.setVoice({"name": "Karen", "locale": "en-AU"});
 
   await flutterTts.setPitch(1.0);
-  Get.put(mycontroller()).bolnaa.value = true;
+
   await flutterTts.speak(text);
-  Get.put(mycontroller()).bolnaa.value = false;
 }
 
 //text to s;peech male//
 
-
+ai_pressed() {}

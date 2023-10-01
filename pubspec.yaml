@@ -40,6 +40,8 @@ dependencies:
   get: ^4.6.5
   avatar_glow: ^2.0.2
   speech_to_text: ^6.3.0
+  sizer: ^2.0.15
+  get_storage: ^2.1.1
 
 dev_dependencies:
   flutter_test:

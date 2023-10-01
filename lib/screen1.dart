@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 
+import 'Details.dart';
 import 'controller.dart';
 import 'functions.dart';
 
@@ -31,6 +32,7 @@ class _Screen1State extends State<Screen1> {
   bool micpressed = false;
   String myreply = '';
   int count = 0;
+  bool stop = true;
 
   @override
   void initState() {
@@ -97,7 +99,7 @@ class _Screen1State extends State<Screen1> {
           children: [
             Container(
               height: height * 0.5,
-              child: Get.put(mycontroller()).bolnaa.value
+              child: stop
                   ? Image.asset('assets/hr_ai_img.jpg')
                   : Image.asset('assets/hr_ai_dark.gif'),
             ),
@@ -129,23 +131,63 @@ class _Screen1State extends State<Screen1> {
             ),
             ElevatedButton(
               onPressed: () async {
-                await chatGPTAPI(firsttime
-                    ? "next question, but don't repeat previous question(in only 20 words)(only oral questions)"
-                    : "only one hard interview viva question in html (in only 20 words)(only oral questions)");
-                setState(() {});
-                firsttime = true;
-                print(firsttime);
-                print(Get.put(mycontroller()).bolnaa.value);
-                //answer = '';
+                if (count == 0) {
+                  setState(() {
+                    stop = false;
+                  });
+                  await speak(
+                      "hello $skill1main , tet's start your interview \n introduce your self");
+                  setState(() {
+                    stop = true;
+                  });
+                }
+                if (count == 1) {
+                  speak(
+                      "so , as you mentioned in your resume you are having good skills in $skill2main , $skill3main , $skill4main , $skill5main \n am i right?");
+                }
+                if (count == 2) {
+                  speak(
+                      "let's start your interview ,with Questions , you can respond it by holding mic, or can go for next question");
+                }
+                if (count > 2 && count <= 12) {
+                  await chatGPTAPI(firsttime
+                      ? "next question, but don't repeat previous question(in only 20 words)(only oral questions)"
+                      : "only one hard interview viva question in html (in only 20 words)(only oral questions)");
+                  setState(() {});
+                  firsttime = true;
+                  print(firsttime);
+                  print(Get.put(mycontroller()).bolnaa.value);
+                  //answer = '';
 
-                speak(hrquestion);
-                setState(() {
-                  checkanswer = '';
-                  myreply = '';
-                });
+                  speak(hrquestion);
+                  setState(() {
+                    checkanswer = '';
+                    myreply = '';
+                  });
+                }
+                if (count > 13) {
+                  speak(
+                      "Thankyou $skill1main your interview is completed , and result will be decliered soon , You can move to HR round");
+                }
+                count++;
+                setState(() {});
+                print(count);
               },
-              child: Text(!firsttime ? "Start Interview" : 'Next Question'),
+              child: Text(count == 0
+                  ? 'Start'
+                  : count == 1
+                      ? 'Next'
+                      : count == 2
+                          ? "Yes ma'am"
+                          : count == 3
+                              ? "Ok ma'am"
+                              : (count > 2 && count < 12)
+                                  ? "Next Question"
+                                  : (count > 12)
+                                      ? "Interview Complited"
+                                      : ""),
             ),
+            //!firsttime ? "Start Interview" : 'Next Question'
             SizedBox(
               height: height * 0.1,
             ),
