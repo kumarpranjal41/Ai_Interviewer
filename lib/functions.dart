@@ -5,9 +5,10 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 final List<Map<String, String>> messages = [];
+final List<Map<String, String>> messages2 = [];
 String hrquestion = '';
 String checkanswer = '';
-const String OpenAiKey = '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';
+const String OpenAiKey = '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';
 
 //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
 //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
@@ -37,6 +38,7 @@ Future<String> chatGPTAPI(String prompt) async {
       // });
       hrquestion = content;
       print(content);
+     // messages.clear();
       return content;
     }
     return 'An internal error occurred';
@@ -47,7 +49,7 @@ Future<String> chatGPTAPI(String prompt) async {
 
 ///
 Future<String> chatGPTAPIcheck(String prompt) async {
-  messages.add({
+  messages2.add({
     'role': 'user',
     'content': prompt,
   });
@@ -59,7 +61,7 @@ Future<String> chatGPTAPIcheck(String prompt) async {
         'Authorization': 'Bearer $OpenAiKey',
       },
       body: jsonEncode(
-          {"model": "gpt-3.5-turbo", "messages": messages, "max_tokens": 100}),
+          {"model": "gpt-3.5-turbo", "messages": messages2, "max_tokens": 100}),
     );
 
     if (res.statusCode == 200) {
@@ -72,6 +74,7 @@ Future<String> chatGPTAPIcheck(String prompt) async {
       // });
       checkanswer = content;
       print(content);
+      messages2.clear();
       return content;
     }
     return 'An internal error occurred';

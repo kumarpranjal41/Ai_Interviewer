@@ -56,6 +56,7 @@ class _Screen1State extends State<Screen1> {
         repeatPauseDuration: Duration(milliseconds: 100),
         child: GestureDetector(
           onTapDown: (details) async {
+            flutterTts.pause();
             if (!micpressed) {
               var available = await speechToText.initialize();
               if (available) {
@@ -78,10 +79,22 @@ class _Screen1State extends State<Screen1> {
             });
             speechToText.stop();
 
-            await chatGPTAPIcheck(
-                "compair my answer with your answer $myreply,question is = $hrquestion and give correct explanitaions(rate my answer with number%)(only in 30 words)");
+            count == 0
+                ? ()
+                : count == 1
+                    ? ()
+                    : count == 2
+                        ? ()
+                        : count == 3
+                            ? ()
+                            : count > 12
+                                ? ()
+                                : await chatGPTAPIcheck(
+                                    "compair my answer with your answer $myreply,question is = $hrquestion and give correct explanitaions(rate my answer with number%)(only in 30 words)");
             setState(() {});
-            speak(checkanswer);
+            count == 1
+                ? speak("nice introduction , lets move on next")
+                : speak(checkanswer);
           },
           child: CircleAvatar(
             radius: 35,
@@ -100,8 +113,8 @@ class _Screen1State extends State<Screen1> {
             Container(
               height: height * 0.5,
               child: stop
-                  ? Image.asset('assets/hr_ai_img.jpg')
-                  : Image.asset('assets/hr_ai_dark.gif'),
+                  ? Image.asset('assets/hr_ai_dark.gif')
+                  : Image.asset('assets/hr_ai_img.jpg'),
             ),
             Container(
               height: height * 0.24,
@@ -151,8 +164,8 @@ class _Screen1State extends State<Screen1> {
                 }
                 if (count > 2 && count <= 12) {
                   await chatGPTAPI(firsttime
-                      ? "next question, but don't repeat previous question(in only 20 words)(only oral questions)"
-                      : "only one hard interview viva question in html (in only 20 words)(only oral questions)");
+                      ? "next question (but don't repeat previous question)(in only 20 words)(only oral questions)"
+                      : "only one hard interview viva question in $skill2main or $skill3main or $skill4main or $skill5main (in only 20 words)(only oral questions)");
                   setState(() {});
                   firsttime = true;
                   print(firsttime);
@@ -181,7 +194,7 @@ class _Screen1State extends State<Screen1> {
                           ? "Yes ma'am"
                           : count == 3
                               ? "Ok ma'am"
-                              : (count > 2 && count < 12)
+                              : (count > 2 && count <= 12)
                                   ? "Next Question"
                                   : (count > 12)
                                       ? "Interview Complited"
